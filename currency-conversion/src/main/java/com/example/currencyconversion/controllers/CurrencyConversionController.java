@@ -15,9 +15,11 @@ import java.util.HashMap;
 @RequestMapping("/currency-conversion")
 public class CurrencyConversionController {
 
+    private final RestTemplate restTemplate;
     private final CurrencyExchangeProxy proxy;
 
-    public CurrencyConversionController(CurrencyExchangeProxy proxy) {
+    public CurrencyConversionController(RestTemplate restTemplate, CurrencyExchangeProxy proxy) {
+        this.restTemplate = restTemplate;
         this.proxy = proxy;
     }
 
@@ -29,7 +31,7 @@ public class CurrencyConversionController {
         HashMap<String, String> uriVariables = new HashMap<>();
         uriVariables.put("from", from);
         uriVariables.put("to", to);
-        ResponseEntity<CurrencyConversion> responseEntity = new RestTemplate()
+        ResponseEntity<CurrencyConversion> responseEntity = restTemplate
                 .getForEntity("http://localhost:8000/currency-exchange/from/{from}/to/{to}",
                         CurrencyConversion.class, uriVariables);
 

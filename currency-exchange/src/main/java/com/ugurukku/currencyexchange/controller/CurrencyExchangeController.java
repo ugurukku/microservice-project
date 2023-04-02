@@ -2,6 +2,8 @@ package com.ugurukku.currencyexchange.controller;
 
 import com.ugurukku.currencyexchange.entity.CurrencyExchange;
 import com.ugurukku.currencyexchange.repository.CurrencyExchangeRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/currency-exchange")
 public class CurrencyExchangeController {
+
+    private final Logger logger = LoggerFactory.getLogger(CurrencyExchangeController.class);
 
     private final Environment environment;
 
@@ -26,6 +30,8 @@ public class CurrencyExchangeController {
     public CurrencyExchange retrieveExchangeValue(
             @PathVariable("from") String from,
             @PathVariable("to") String to) {
+
+        logger.info("called with {} to {}",from,to);
 
         CurrencyExchange currencyExchange = repository.findByFromAndTo(from,to);
         String port = environment.getProperty("local.server.port");
